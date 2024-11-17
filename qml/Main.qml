@@ -1,5 +1,6 @@
-import QtQuick 2.0
-import QtQuick.Controls 2.0
+import QtQuick
+import QtQuick.Controls 2.15
+import QtQuick.Layouts
 
 import com.dbconnector 1.0
 
@@ -9,110 +10,63 @@ Window
     height: 1080
     visible: true
     title: qsTr("BusPark Watcher")
+
     Page
     {
         anchors.fill: parent
 
-        Rectangle
+        StackLayout
         {
+            id: stack
+
             anchors.fill: parent
 
-            color: Constants.darkBackColor
+            currentIndex: 0
 
-            MyButton
+            LauncherScreen
             {
-                id: connectButton
 
-                anchors.centerIn: parent
+            }
 
-                implicitHeight: parent.height / 2
-                implicitWidth: parent.width / 4
-                state: "default"
+            Rectangle
+            {
 
-                text: ""
-                // borderColor: hovered ? Constants.selectedBlueFore : Constants.defaultBorderColor
-                borderColor: Constants.defaultBorderColor
+                color: Constants.darkBackColor
 
-                onClicked:
-                {
-                    DBConnector.addDatabase()
-                }
+                TableView {
+                    id: dbTable
+                    anchors.fill: parent
+                    // model: DBConnector.getTable("Drivers")
 
-                Label
-                {
-                    id: connectLabel
-                    text: qsTr("ПОДКЛЮЧЕНИЕ")
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.verticalCenterOffset: -50
-                    // color: connectButton.hovered ? Constants.selectedBlueFore : "white"
-                    color: "white"
-                    font.pixelSize: 30
-                    font.family: "Mono Font Family"
-                }
+                    delegate: Rectangle {
+                        width: dbTable.width / 3
+                        height: 40
+                        border.color: "black"
+                        border.width: 1
 
-                Image
-                {
-                    id: connectImg
-                    anchors.centerIn: parent
-
-                    height: parent.height - 10
-                    width: parent.width - 10
-                    fillMode: Image.PreserveAspectFit
-                    // source: connectButton.hovered ? "qrc:/icons/qml/bus-selected.svg" : "qrc:/icons/qml/bus.svg"
-                    source: "qrc:/icons/qml/bus.svg"
-                }
-
-                states:
-                [
-                    // State
-                    // {
-                    //     name: "default"
-                    //     PropertyChanges
-                    //     {
-                    //         target: connectButton
-                    //         borderColor: Constants.defaultBorderColor
-                    //         backgroundColor: Constants.darkBackColor
-                    //     }
-                    //     PropertyChanges
-                    //     {
-                    //         target: connectLabel
-                    //         color: "white"
-                    //     }
-                    //     PropertyChanges
-                    //     {
-                    //         target: connectImg
-                    //         source: "qrc:/icons/qml/bus.svg"
-                    //     }
-                    // },
-                    State
-                    {
-                        name: "hovered"
-                        when: connectButton.hovered
-                        PropertyChanges
-                        {
-                            target: connectButton
-                            borderColor: Constants.selectedBlueFore
-                            backgroundColor: "#172c3e"
-                        }
-                        PropertyChanges
-                        {
-                            target: connectLabel
-                            color: Constants.selectedBlueFore
-                        }
-                        PropertyChanges
-                        {
-                            target: connectImg
-                            source: "qrc:/icons/qml/bus-selected.svg"
+                        Text {
+                            anchors.centerIn: parent
+                            text: modelData // `modelData` содержит данные текущей ячейки
                         }
                     }
-                ]
-                transitions: Transition
-                {
-                    ColorAnimation
-                    {
-                        duration: 150
-                    }
+                }
+
+            }
+        }
+
+        Connections
+        {
+            target: DBConnector
+            function onConnected()
+            {
+                stack.currentIndex = 1
+                let model = DBConnector.getTable("Drivers");
+                if (model) {
+                    console.log("Model initialized:", model);
+                    console.log("Available roles:", model.roleNames());
+                    dbTable.model = model;
+                } else {
+                    console.error("Failed to initialize model.");
                 }
             }
         }
