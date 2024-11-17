@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>qml/bus.svg</file>
+        <file>qml/bus-selected.svg</file>
+    </qresource>
+</RCC>
