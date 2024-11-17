@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts
 
 import com.dbconnector 1.0
+import com.querymodel 1.0
 
 Window
 {
@@ -11,64 +12,157 @@ Window
     visible: true
     title: qsTr("BusPark Watcher")
 
-    Page
+    StackLayout
     {
+        id: stack
+
         anchors.fill: parent
 
-        StackLayout
+        currentIndex: 0
+
+        LauncherScreen
         {
-            id: stack
 
-            anchors.fill: parent
-
-            currentIndex: 0
-
-            LauncherScreen
-            {
-
-            }
-
-            Rectangle
-            {
-
-                color: Constants.darkBackColor
-
-                TableView {
-                    id: dbTable
-                    anchors.fill: parent
-                    // model: DBConnector.getTable("Drivers")
-
-                    delegate: Rectangle {
-                        width: dbTable.width / 3
-                        height: 40
-                        border.color: "black"
-                        border.width: 1
-
-                        Text {
-                            anchors.centerIn: parent
-                            text: modelData // `modelData` содержит данные текущей ячейки
-                        }
-                    }
-                }
-
-            }
         }
 
-        Connections
+        Page
         {
-            target: DBConnector
-            function onConnected()
+            header: Rectangle
             {
-                stack.currentIndex = 1
-                let model = DBConnector.getTable("Drivers");
-                if (model) {
-                    console.log("Model initialized:", model);
-                    console.log("Available roles:", model.roleNames());
-                    dbTable.model = model;
-                } else {
-                    console.error("Failed to initialize model.");
+                implicitHeight: 100
+                // implicitWidth: parent.width
+
+                color: Constants.defaultBorderColor
+                Rectangle
+                {
+                    anchors.fill: parent
+                    anchors.bottomMargin: 5
+                    color: Constants.lightBackColor
+
+                    RowLayout
+                    {
+                        anchors.fill: parent
+
+                        MyButton
+                        {
+                            id: returnButton
+
+                            // Layout.verticalCenter: parent.verticalCenter
+                            Layout.leftMargin: 20
+
+                            implicitWidth: 60
+                            implicitHeight: 60
+                            text: ""
+
+                            Image
+                            {
+                                anchors.centerIn: parent
+                                height: 24
+                                width: 24
+                                fillMode: Image.PreserveAspectFit
+                                source: "qrc:/icons/qml/arrow-u-up-left-svgrepo-com.svg"
+                            }
+                            onClicked:
+                            {
+                                stack.currentIndex = 0
+                            }
+                        }
+                    }
+
                 }
             }
+
+            Item
+            {
+                anchors.fill: parent
+                RowLayout
+                {
+                    anchors.fill: parent
+                    spacing: 0
+
+                    Rectangle
+                    {
+                        id: controlRect
+
+                        // Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        Layout.preferredWidth: 150
+
+                        color: Constants.defaultBorderColor
+
+                        Rectangle
+                        {
+                            anchors.fill: parent
+                            anchors.rightMargin: 2
+
+                            color: Constants.darkBackColor
+
+                            ColumnLayout
+                            {
+                                anchors.fill: parent
+                                anchors.margins: 10
+                                ComboBox
+                                {
+                                    id: tablesComboBox
+                                    // Layout.fillWidth: true
+                                    // Layout.fillHeight: true
+
+                                    onCurrentTextChanged:
+                                    {
+                                        if(!currentText.length)
+                                            return;
+                                        queryModel.query = "SELECT * FROM " + currentText
+                                        sqlTable.tableModel = queryModel
+                                        sqlTable.headerModel = queryModel.userRoleNames
+                                    }
+                                }
+                                Item
+                                {
+                                    id: spacer
+                                    Layout.fillHeight: true
+                                }
+                            }
+                        }
+                    }
+
+                    Rectangle
+                    {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+
+                        color: Constants.lightBackColor
+                        MyTable
+                        {
+                            id: sqlTable
+                            anchors.fill: parent
+                            anchors.margins: 10
+
+                            queryModel: SqlQueryModel
+                            {
+                                id: queryModel
+                            }
+                        }
+                    }
+
+                }
+            }
+
+        }
+    }
+
+    Connections
+    {
+        target: DBConnector
+        function onConnected()
+        {
+            tablesComboBox.model = DBConnector.tables()
+
+            // queryModel.query = "SELECT * FROM Buses"
+            // sqlTable.tableModel = queryModel
+            // sqlTable.headerModel = queryModel.userRoleNames
+
+
+            stack.currentIndex = 1
         }
     }
 }

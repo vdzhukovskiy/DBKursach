@@ -30,7 +30,9 @@ qt_add_qml_module(appDBKursach
     QML_FILES qml/MyButton.qml
     RESOURCES assets.qrc
     QML_FILES qml/LauncherScreen.qml
-    SOURCES sqltablemodel.h sqltablemodel.cpp
+    SOURCES
+    SOURCES src/sqlquerymodel.h src/sqlquerymodel.cpp
+    QML_FILES qml/MyTable.qml
     # QML_FILES Constants.qml
 )
 

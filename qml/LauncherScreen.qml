@@ -5,7 +5,7 @@ import com.dbconnector 1.0
 
 Rectangle
 {
-    color: Constants.darkBackColor
+    color: Constants.lightBackColor
 
     MyButton
     {
@@ -27,6 +27,17 @@ Rectangle
 
         Label
         {
+            text: qsTr("BUS ADMIN")
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: -400
+            color: "white"
+            font.pixelSize: 150
+            font.family: Constants.monoFontFamily
+        }
+
+        Label
+        {
             id: connectLabel
             text: qsTr("ПОДКЛЮЧЕНИЕ")
             anchors.horizontalCenter: parent.horizontalCenter
@@ -34,7 +45,7 @@ Rectangle
             anchors.verticalCenterOffset: -50
             color: "white"
             font.pixelSize: 30
-            font.family: "Mono Font Family"
+            font.family: Constants.monoFontFamily
         }
 
         Image
@@ -58,7 +69,7 @@ Rectangle
                 {
                     target: connectButton
                     borderColor: Constants.selectedBlueFore
-                    backgroundColor: "#172c3e"
+                    backgroundColor: Constants.selectedBlueBack
                 }
                 PropertyChanges
                 {

@@ -5,7 +5,7 @@
 #include <QSqlDatabase>
 #include <QSqlTableModel>
 
-#include "sqltablemodel.h"
+// #include "sqlquerymodel.h"
 #include <memory>
 
 class DbConnector : public QObject
@@ -16,13 +16,15 @@ public:
     static DbConnector& instance();
     ~DbConnector();
 
-    Q_INVOKABLE SqlTableModel &getTable(QString const & name);
+    Q_INVOKABLE QStringList tables();
+
+    QSqlDatabase &getDatabase();
+
     Q_INVOKABLE void addDatabase();
 
 signals:
     void connected();
 
 private:
-    std::unique_ptr<QSqlDatabase> db_;
-    std::shared_ptr<SqlTableModel> table_model_;
+    std::shared_ptr<QSqlDatabase> db_;
 };

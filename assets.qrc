@@ -2,5 +2,7 @@
     <qresource prefix="/icons">
         <file>qml/bus.svg</file>
         <file>qml/bus-selected.svg</file>
+        <file>qml/arrow-u-up-left-svgrepo-com.svg</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

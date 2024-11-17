@@ -3,6 +3,7 @@
 #include <QSqlTableModel>
 #include <QSqlError>
 #include <QDebug>
+#include <QSqlQuery>
 
 DbConnector::DbConnector(QObject *parent)
     : QObject{parent}
@@ -20,30 +21,28 @@ DbConnector::~DbConnector()
         db_->close();
 }
 
-SqlTableModel& DbConnector::getTable(const QString &name)
+
+QStringList DbConnector::tables()
 {
-    if (!table_model_) {
-        qDebug() << "Error: table_model_ is not initialized!";
-        throw std::runtime_error("Table model is not initialized.");
-    }
+    auto tables = db_->tables();
+    tables.insert(0, "");
+    return tables;
+}
 
-    table_model_->setTable(name);  // Устанавливаем таблицу по имени
-    if (!table_model_->select()) {
-        qDebug() << "Table select failed:" << table_model_->lastError().text();
-        throw std::runtime_error("Failed to select table data.");
-    }
-
-    qDebug() << table_model_->rowCount();
-
-    return *table_model_;
+QSqlDatabase &DbConnector::getDatabase()
+{
+    return *db_;
 }
 
 void DbConnector::addDatabase()
 {
     if(db_)
+    {
+        emit connected();
         return;
+    }
 
-    db_ = std::make_unique<QSqlDatabase>(QSqlDatabase::addDatabase("QMYSQL", "conn"));
+    db_ = std::make_shared<QSqlDatabase>(QSqlDatabase::addDatabase("QMYSQL", "conn"));
     db_->setHostName("damsel8s.beget.tech");
     db_->setDatabaseName("damsel8s_zhukkp");
     db_->setUserName("damsel8s_zhukkp");
@@ -51,19 +50,5 @@ void DbConnector::addDatabase()
     bool ok = db_->open();
     qDebug() << ok;
 
-
-    table_model_ = std::make_shared<SqlTableModel>(nullptr, *db_);
-    if (!db_->isOpen()) {
-        qDebug() << "Database connection failed:" << db_->lastError().text();
-    }
-
-    // table_model_->setTable("Drivers");
-    // model.setFilter("salary > 50000");
-    // model.setSort(2, Qt::DescendingOrder);
-    // ok = table_model_->select();
-
-
-    qDebug() << ok << table_model_->rowCount();
     emit connected();
-    // db_.setHostName("")
 }

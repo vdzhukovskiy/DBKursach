@@ -4,10 +4,13 @@
 #include <QQuickStyle>
 
 #include "dbconnector.h"
+#include "sqlquerymodel.h"
+
 
 void register_types()
 {
     qmlRegisterSingletonInstance("com.dbconnector", 1, 0, "DBConnector", &DbConnector::instance());
+    qmlRegisterType<SqlQueryModel>("com.querymodel", 1, 0, "SqlQueryModel");
 }
 
 int main(int argc, char *argv[])

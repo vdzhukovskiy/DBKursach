@@ -5,7 +5,7 @@ Button
 {
     id: control
 
-    property color backgroundColor: Constants.darkBackColor
+    property color backgroundColor: Constants.lightBackColor
     property color borderColor: Constants.defaultBorderColor
 
     text: qsTr("Button")
