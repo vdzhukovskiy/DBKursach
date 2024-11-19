@@ -17,10 +17,9 @@ public:
     ~DbConnector();
 
     Q_INVOKABLE QStringList tables();
-
-    QSqlDatabase &getDatabase();
-
     Q_INVOKABLE void addDatabase();
+
+    QSqlDatabase& getDatabase();
 
 signals:
     void connected();

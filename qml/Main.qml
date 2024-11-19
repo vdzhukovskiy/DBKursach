@@ -86,7 +86,7 @@ Window
 
                         // Layout.fillWidth: true
                         Layout.fillHeight: true
-                        Layout.preferredWidth: 150
+                        Layout.preferredWidth: 200
 
                         color: Constants.defaultBorderColor
 
@@ -116,6 +116,52 @@ Window
                                         sqlTable.headerModel = queryModel.userRoleNames
                                     }
                                 }
+
+                                Label
+                                {
+                                    text: qsTr("WHERE")
+                                    color: "white"
+                                    font.pixelSize: 16
+                                    font.family: Constants.monoFontFamily
+                                }
+
+                                ComboBox
+                                {
+                                    id: columnsComboBox
+                                    // Layout.fillWidth: true
+                                    // Layout.fillHeight: true
+                                    model: sqlTable.headerModel
+                                }
+
+                                Label
+                                {
+                                    text: qsTr("LIKE")
+                                    color: "white"
+                                    font.pixelSize: 16
+                                    font.family: Constants.monoFontFamily
+                                }
+
+                                TextField
+                                {
+                                    id: searchTextField
+                                    color: "white"
+                                    font.pixelSize: 16
+                                    font.family: Constants.monoFontFamily
+                                    background: Rectangle
+                                    {
+                                        color: Constants.lightBackColor
+                                    }
+
+                                    onEditingFinished:
+                                    {
+                                        if(text.length)
+                                            queryModel.query = "SELECT * FROM " + tablesComboBox.currentText +
+                                                    " WHERE " + columnsComboBox.currentText + " LIKE " + searchTextField.text
+                                        else
+                                            queryModel.query = "SELECT * FROM " + tablesComboBox.currentText
+                                    }
+                                }
+
                                 Item
                                 {
                                     id: spacer
@@ -147,22 +193,22 @@ Window
                 }
             }
 
+            Connections
+            {
+                target: DBConnector
+                function onConnected()
+                {
+                    tablesComboBox.model = DBConnector.tables()
+
+                    // queryModel.query = "SELECT * FROM Buses"
+                    // sqlTable.tableModel = queryModel
+                    // sqlTable.headerModel = queryModel.userRoleNames
+
+
+                    stack.currentIndex = 1
+                }
+            }
         }
     }
 
-    Connections
-    {
-        target: DBConnector
-        function onConnected()
-        {
-            tablesComboBox.model = DBConnector.tables()
-
-            // queryModel.query = "SELECT * FROM Buses"
-            // sqlTable.tableModel = queryModel
-            // sqlTable.headerModel = queryModel.userRoleNames
-
-
-            stack.currentIndex = 1
-        }
-    }
 }
