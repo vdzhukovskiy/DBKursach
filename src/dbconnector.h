@@ -17,7 +17,7 @@ public:
     ~DbConnector();
 
     Q_INVOKABLE QStringList tables();
-    Q_INVOKABLE void addDatabase();
+    Q_INVOKABLE void addDatabase(const QString &hostName, const QString &databaseName, const QString &userName, const QString &password);
 
     QSqlDatabase& getDatabase();
 

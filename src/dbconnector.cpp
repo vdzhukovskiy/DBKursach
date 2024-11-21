@@ -21,7 +21,6 @@ DbConnector::~DbConnector()
         db_->close();
 }
 
-
 QStringList DbConnector::tables()
 {
     auto tables = db_->tables();
@@ -34,19 +33,23 @@ QSqlDatabase &DbConnector::getDatabase()
     return *db_;
 }
 
-void DbConnector::addDatabase()
+void DbConnector::addDatabase(QString const & hostName, QString const & databaseName, QString const & userName, QString const & password)
 {
-    if(db_)
+    if(db_ && db_->isOpen() && !db_->tables().empty())
     {
         emit connected();
         return;
     }
+    if(db_ && db_->tables().empty())
+    {
+        db_->close();
+    }
 
     db_ = std::make_shared<QSqlDatabase>(QSqlDatabase::addDatabase("QMYSQL", "conn"));
-    db_->setHostName("damsel8s.beget.tech");
-    db_->setDatabaseName("damsel8s_zhukkp");
-    db_->setUserName("damsel8s_zhukkp");
-    db_->setPassword("Admin123");
+    db_->setHostName(hostName);
+    db_->setDatabaseName(databaseName);
+    db_->setUserName(userName);
+    db_->setPassword(password);
     bool ok = db_->open();
     qDebug() << ok;
 
