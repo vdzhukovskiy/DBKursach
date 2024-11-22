@@ -11,7 +11,7 @@ Rectangle
 
     property var queryModel
     property var headerModel
-    property var tableModel
+    property var tableModel: queryModel
     color: Constants.lightBackColor
 
     Row

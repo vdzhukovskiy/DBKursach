@@ -10,4 +10,6 @@ QtObject
     readonly property color selectedBlueBack: "#172c3e"
 
     readonly property string monoFontFamily: "Mono Font Family"
+
+    readonly property int headerItemHeight: 60
 }

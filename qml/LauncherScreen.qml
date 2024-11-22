@@ -48,17 +48,14 @@ Rectangle
                 margins: 10
             }
 
-            Label
+            MyLabel
             {
                 Layout.fillWidth: true
 
                 text: qsTr("Host Name:")
-                color: "white"
-                font.pixelSize: parent.labelFontSize
-                font.family: Constants.monoFontFamily
             }
 
-            TextField
+            DTextField
             {
                 id: hostnameTextField
 
@@ -66,30 +63,17 @@ Rectangle
                 Layout.bottomMargin: 8
                 Layout.preferredHeight: parent.textfieldHeight
 
-                color: "white"
-                font.pixelSize: parent.textfieldFontSize
-                font.family: Constants.monoFontFamily
-                background: Rectangle
-                {
-                    color: Constants.lightBackColor
-                    border.color: Constants.defaultBorderColor
-                    border.width: 1
-                    radius: 2
-                }
                 text: "damsel8s.beget.tech"
             }
 
-            Label
+            MyLabel
             {
                 Layout.fillWidth: true
 
                 text: qsTr("Database Name:")
-                color: "white"
-                font.pixelSize: parent.labelFontSize
-                font.family: Constants.monoFontFamily
             }
 
-            TextField
+            DTextField
             {
                 id: databaseNameTextField
 
@@ -97,77 +81,40 @@ Rectangle
                 Layout.bottomMargin: 8
                 Layout.preferredHeight: parent.textfieldHeight
 
-                color: "white"
-                font.pixelSize: parent.textfieldFontSize
-                font.family: Constants.monoFontFamily
-                background: Rectangle
-                {
-                    color: Constants.lightBackColor
-                    border.color: Constants.defaultBorderColor
-                    border.width: 1
-                    radius: 2
-                }
                 text: "damsel8s_zhukkp"
             }
 
-            Label
+            MyLabel
             {
                 Layout.fillWidth: true
 
                 text: qsTr("User Name:")
-                color: "white"
-                font.pixelSize: parent.labelFontSize
-                font.family: Constants.monoFontFamily
             }
 
-            TextField
+            DTextField
             {
                 id: userNameTextField
 
-                Layout.fillWidth: true
                 Layout.bottomMargin: 8
+                Layout.fillWidth: true
                 Layout.preferredHeight: parent.textfieldHeight
-
-                color: "white"
-                font.pixelSize: parent.textfieldFontSize
-                font.family: Constants.monoFontFamily
-                background: Rectangle
-                {
-                    color: Constants.lightBackColor
-                    border.color: Constants.defaultBorderColor
-                    border.width: 1
-                    radius: 2
-                }
                 text: "damsel8s_zhukkp"
             }
 
-            Label
+            MyLabel
             {
                 Layout.fillWidth: true
 
                 text: qsTr("Password:")
-                color: "white"
-                font.pixelSize: parent.labelFontSize
-                font.family: Constants.monoFontFamily
             }
 
-            TextField
+            DTextField
             {
                 id: passwordTextField
 
                 Layout.fillWidth: true
                 Layout.preferredHeight: parent.textfieldHeight
 
-                color: "white"
-                font.pixelSize: parent.textfieldFontSize
-                font.family: Constants.monoFontFamily
-                background: Rectangle
-                {
-                    color: Constants.lightBackColor
-                    border.color: Constants.defaultBorderColor
-                    border.width: 1
-                    radius: 2
-                }
                 text: "Admin123"
             }
         }

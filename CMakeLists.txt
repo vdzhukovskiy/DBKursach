@@ -33,6 +33,11 @@ qt_add_qml_module(appDBKursach
     SOURCES
     SOURCES src/sqlquerymodel.h src/sqlquerymodel.cpp
     QML_FILES qml/MyTable.qml
+    QML_FILES qml/DBusAdmin.qml
+    QML_FILES qml/DTextField.qml
+    QML_FILES qml/MyLabel.qml
+    QML_FILES qml/Viewer.qml
+    QML_FILES qml/CrashReporter.qml
     # QML_FILES Constants.qml
 )
 

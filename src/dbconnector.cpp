@@ -9,7 +9,7 @@ DbConnector::DbConnector(QObject *parent)
     : QObject{parent}
 {}
 
-DbConnector &DbConnector::instance()
+DbConnector& DbConnector::instance()
 {
     static DbConnector inst;
     return inst;
@@ -52,6 +52,8 @@ void DbConnector::addDatabase(QString const & hostName, QString const & database
     db_->setPassword(password);
     bool ok = db_->open();
     qDebug() << ok;
+    if(!ok)
+        return;
 
     emit connected();
 }
