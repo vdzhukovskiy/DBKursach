@@ -11,7 +11,7 @@ Rectangle
 
     property var queryModel
     property var headerModel
-    property var tableModel: queryModel
+
     color: Constants.lightBackColor
 
     Row
@@ -48,7 +48,7 @@ Rectangle
     {
         id: dbTable
 
-        model: root.tableModel
+        model: root.queryModel
         anchors.left: parent.left
         anchors.top: horizontalHeader.bottom
         anchors.right: parent.right
@@ -72,7 +72,7 @@ Rectangle
             Text
             {
                 anchors.centerIn: parent
-                text: model[queryModel.userRoleNames[column]]
+                text: model[headerModel[column]] ? model[headerModel[column]] : ""
                 color: "white"
                 font.family: Constants.monoFontFamily
             }

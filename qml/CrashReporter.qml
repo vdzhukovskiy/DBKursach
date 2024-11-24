@@ -22,7 +22,6 @@ Rectangle
     {
         tableQuery.query = "SELECT * FROM Incidents"
         crashTable.queryModel = tableQuery
-        crashTable.tableModel = tableQuery
         crashTable.headerModel = tableQuery.userRoleNames
     }
 
