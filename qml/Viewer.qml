@@ -53,7 +53,7 @@ RowLayout
                     }
                 }
 
-                Label
+                MyLabel
                 {
                     Layout.fillWidth: true
 
@@ -72,7 +72,7 @@ RowLayout
                     model: sqlTable.headerModel
                 }
 
-                Label
+                MyLabel
                 {
                     Layout.fillWidth: true
 
@@ -82,25 +82,19 @@ RowLayout
                     font.family: Constants.monoFontFamily
                 }
 
-                TextField
+                DTextField
                 {
                     id: searchTextField
 
                     Layout.fillWidth: true
 
                     color: "white"
-                    font.pixelSize: 16
-                    font.family: Constants.monoFontFamily
-                    background: Rectangle
-                    {
-                        color: Constants.lightBackColor
-                    }
 
                     onEditingFinished:
                     {
                         if(text.length)
                             queryModel.query = "SELECT * FROM " + tablesComboBox.currentText +
-                                    " WHERE " + columnsComboBox.currentText + " LIKE " + searchTextField.text
+                                    " WHERE CONVERT(" + columnsComboBox.currentText + ", char) = " + searchTextField.text
                         else
                             queryModel.query = "SELECT * FROM " + tablesComboBox.currentText
                     }

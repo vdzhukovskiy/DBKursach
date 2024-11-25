@@ -13,31 +13,94 @@ Rectangle
 
     color: Constants.lightBackColor
 
-    SqlQueryModel
-    {
-        id: tableQuery
-    }
-
     onLoaded:
     {
-        tableQuery.query = "SELECT * FROM Incidents"
-        crashTable.queryModel = tableQuery
-        crashTable.headerModel = tableQuery.userRoleNames
+        crashTableQuery.query = "SELECT * FROM Incidents"
+        scheduleTableQuery.query = "SELECT * FROM Schedules"
     }
 
-    MyTable
+    RowLayout
     {
-        id: crashTable
+        anchors.fill: parent
 
-        anchors
+        spacing: 0
+
+        Rectangle
         {
-            top: parent.top
-            left: parent.left
-            right: parent.right
+            id: controlRect
+
+            Layout.fillHeight: true
+            Layout.preferredWidth: 400
+
+            color: Constants.defaultBorderColor
+
+            Rectangle
+            {
+                anchors.fill: parent
+                anchors.rightMargin: 2
+
+                color: Constants.darkBackColor
+
+                ColumnLayout
+                {
+                    anchors.fill: parent
+                    anchors.margins: 10
+
+
+                }
+            }
         }
 
-        anchors.topMargin: 10
-        anchors.leftMargin: 40
-        anchors.rightMargin: 40
+        Rectangle
+        {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            color: Constants.lightBackColor
+
+            ColumnLayout
+            {
+                anchors.fill: parent
+                anchors.margins: 5
+
+                MyTable
+                {
+                    id: crashTable
+
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+
+                    SqlQueryModel
+                    {
+                        id: crashTableQuery
+
+                        onQueryChanged:
+                        {
+                            crashTable.queryModel = crashTableQuery
+                            crashTable.headerModel = crashTableQuery.userRoleNames
+                        }
+                    }
+                }
+
+                MyTable
+                {
+                    id: scheduleTable
+
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+
+                    SqlQueryModel
+                    {
+                        id: scheduleTableQuery
+
+                        onQueryChanged:
+                        {
+                            scheduleTable.queryModel = scheduleTableQuery
+                            scheduleTable.headerModel = scheduleTableQuery.userRoleNames
+                        }
+                    }
+                }
+            }
+        }
     }
 }

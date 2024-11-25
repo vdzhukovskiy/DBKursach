@@ -12,6 +12,8 @@ Rectangle
     property var queryModel
     property var headerModel
 
+    property alias rows: dbTable.rows
+
     color: Constants.lightBackColor
 
     Row
@@ -55,10 +57,14 @@ Rectangle
         anchors.bottom: parent.bottom
         boundsBehavior: Flickable.StopAtBounds
 
+        implicitWidth: 40 * rows
+
         selectionModel: ItemSelectionModel{}
 
         delegate: Rectangle
         {
+            id: delRect
+
             required property bool selected
             required property bool current
             implicitHeight: 40
@@ -68,13 +74,21 @@ Rectangle
             border.width:  current ? 2 : 1
             clip: true
 
-
             Text
             {
+                id: textDelegate
                 anchors.centerIn: parent
                 text: model[headerModel[column]] ? model[headerModel[column]] : ""
                 color: "white"
                 font.family: Constants.monoFontFamily
+            }
+
+            ToolTip
+            {
+                id: toolTip
+                visible: current && delRect.implicitWidth < textDelegate.contentWidth
+                delay: 300
+                text: textDelegate.text
             }
         }
     }

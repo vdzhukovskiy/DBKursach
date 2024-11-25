@@ -11,5 +11,5 @@ QtObject
 
     readonly property string monoFontFamily: "Mono Font Family"
 
-    readonly property int headerItemHeight: 60
+    readonly property int headerItemHeight: 70
 }

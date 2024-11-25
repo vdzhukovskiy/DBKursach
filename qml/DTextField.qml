@@ -9,7 +9,7 @@ TextField
     id: userNameTextField
 
     color: "white"
-    font.pixelSize: parent.textfieldFontSize
+    font.pixelSize: 16
     font.family: Constants.monoFontFamily
     background: Rectangle
     {
