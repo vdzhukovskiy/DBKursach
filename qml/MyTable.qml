@@ -28,6 +28,7 @@ Rectangle
             model: root.headerModel
             Rectangle
             {
+                id: headerDelegate
                 required property string modelData
                 implicitHeight: 40
                 implicitWidth: root.width / headerModel.length
@@ -35,13 +36,21 @@ Rectangle
                 border.color: Constants.defaultBorderColor
                 border.width: 1
 
-                Text
+                Item
                 {
-                    anchors.centerIn: parent
-                    text: parent.modelData
-                    color: "white"
-                    font.family: Constants.monoFontFamily
+                    anchors.fill: parent
+                    anchors.margins: 2
+                    clip: true
+
+                    Text
+                    {
+                        anchors.centerIn: parent
+                        text: headerDelegate.modelData
+                        color: "white"
+                        font.family: Constants.monoFontFamily
+                    }
                 }
+
             }
         }
     }

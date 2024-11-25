@@ -30,9 +30,9 @@ Page
                 {
                     id: returnButton
 
-                    Layout.leftMargin: 20
+                    Layout.leftMargin: 15
 
-                    implicitWidth: 60
+                    implicitWidth: Constants.headerItemHeight
                     implicitHeight: Constants.headerItemHeight
                     text: ""
 

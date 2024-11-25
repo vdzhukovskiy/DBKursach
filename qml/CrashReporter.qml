@@ -15,13 +15,50 @@ Rectangle
 
     onLoaded:
     {
-        crashTableQuery.query = "SELECT * FROM Incidents"
-        scheduleTableQuery.query = "SELECT * FROM Schedules"
+        crashTableQuery.query    = "SELECT
+                                    i.id AS incident_id,
+                                    b.license_plate AS bus_number,
+                                    d.name AS driver_name,
+                                    i.data AS incident_date,
+                                    i.description,
+                                    i.severity
+                                    FROM
+                                        Incidents i
+                                    JOIN
+                                        Buses b ON i.bus_id = b.id
+                                    JOIN
+                                        Drivers d ON i.driver_id = d.id;
+                                    "
+        scheduleTableQuery.query = "SELECT
+                                    s.id AS schedule_id,
+                                    r.route_number AS route_number,
+                                    b.license_plate AS bus_number,
+                                    d.name AS driver_name,
+                                    s.departure_time,
+                                    s.arrival_time,
+                                    s.status
+                                    FROM
+                                        Schedules s
+                                    JOIN
+                                        Routes r ON s.route_id = r.id
+                                    JOIN
+                                        Buses b ON s.bus_id = b.id
+                                    JOIN
+                                        Drivers d ON s.driver_id = d.id;
+                                    "
     }
 
-    RowLayout
+    SplitView
     {
         anchors.fill: parent
+
+        handle: Rectangle
+        {
+            implicitWidth: 6
+            implicitHeight: 4
+
+            color: Constants.defaultBorderColor
+        }
 
         spacing: 0
 
@@ -29,32 +66,165 @@ Rectangle
         {
             id: controlRect
 
-            Layout.fillHeight: true
-            Layout.preferredWidth: 400
+            SplitView.fillHeight: true
+            SplitView.preferredWidth: 400
+            SplitView.minimumWidth: 375
 
             color: Constants.defaultBorderColor
 
             Rectangle
             {
                 anchors.fill: parent
-                anchors.rightMargin: 2
 
                 color: Constants.darkBackColor
 
+                Rectangle
+                {
+                    id: headerRect
+
+                    anchors
+                    {
+                        top: parent.top
+                        left: parent.left
+                        right: parent.right
+                    }
+
+                    height: 41
+                    color: Constants.defaultBorderColor
+
+                    Rectangle
+                    {
+                        anchors.fill: parent
+                        anchors.bottomMargin: 1
+
+                        color: Constants.darkBackColor
+
+                        MyLabel
+                        {
+                            anchors.centerIn: parent
+
+                            text: qsTr("РЕГИСТРАЦИЯ ИНЦИДЕНТА")
+                            font.pixelSize: 25
+                        }
+                    }
+                }
+
                 ColumnLayout
                 {
-                    anchors.fill: parent
-                    anchors.margins: 10
+                    anchors
+                    {
+                        top: headerRect.bottom
+                        left: parent.left
+                        right: parent.right
+                        margins: 10
+                    }
+                    spacing: 5
 
+                    MyLabel
+                    {
+                        text: qsTr("Имя водителя, попавшего в инцидент:")
+                    }
 
+                    DTextField
+                    {
+                        id: driverName
+
+                        Layout.fillHeight: true
+                        Layout.fillWidth:  true
+                        Layout.preferredHeight: 30
+                        Layout.bottomMargin: 5
+                        font.pixelSize: 18
+                    }
+
+                    MyLabel
+                    {
+                        text: qsTr("Номер автобуса, попавшего в инцидент:")
+                    }
+
+                    DTextField
+                    {
+                        id: busNumber
+
+                        Layout.fillHeight: true
+                        Layout.fillWidth:  true
+                        Layout.preferredHeight: 30
+                        Layout.bottomMargin: 5
+                        font.pixelSize: 18
+                    }
+
+                    MyLabel
+                    {
+                        text: qsTr("Дата инцидента:")
+                    }
+
+                    DTextField
+                    {
+                        id: date
+
+                        Layout.fillHeight: true
+                        Layout.fillWidth:  true
+                        Layout.preferredHeight: 30
+                        Layout.bottomMargin: 5
+                        font.pixelSize: 18
+                    }
+
+                    MyLabel
+                    {
+                        text: qsTr("Описание:")
+                    }
+
+                    DTextField
+                    {
+                        id: description
+
+                        Layout.fillHeight: true
+                        Layout.fillWidth:  true
+                        Layout.preferredHeight: 30
+                        Layout.bottomMargin: 5
+                        font.pixelSize: 18
+                    }
+
+                    MyLabel
+                    {
+                        text: qsTr("Серьезность:")
+                    }
+
+                    ComboBox
+                    {
+                        id: severity
+
+                        Layout.fillHeight: true
+                        Layout.fillWidth:  true
+                        Layout.preferredHeight: 30
+                        Layout.bottomMargin: 15
+                        font.pixelSize: 18
+
+                        model:
+                            [
+                                "Низкий",
+                                "Средний",
+                                "Высокий"
+                            ]
+                    }
+
+                    MyButton
+                    {
+                        Layout.fillWidth: true
+                        Layout.leftMargin: 10
+                        Layout.rightMargin: 10
+                        Layout.preferredHeight: 40
+
+                        text: qsTr("ЗАРЕГИСТРИРОВАТЬ")
+                    }
                 }
             }
         }
 
         Rectangle
         {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+            SplitView.fillWidth: true
+            SplitView.fillHeight: true
+            SplitView.minimumWidth: parent.width / 3
 
             color: Constants.lightBackColor
 
