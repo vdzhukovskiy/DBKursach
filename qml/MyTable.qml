@@ -36,21 +36,14 @@ Rectangle
                 border.color: Constants.defaultBorderColor
                 border.width: 1
 
-                Item
+                Text
                 {
-                    anchors.fill: parent
-                    anchors.margins: 2
-                    clip: true
-
-                    Text
-                    {
-                        anchors.centerIn: parent
-                        text: headerDelegate.modelData
-                        color: "white"
-                        font.family: Constants.monoFontFamily
-                    }
+                    anchors.centerIn: parent
+                    text: headerDelegate.modelData
+                    padding: 2
+                    color: "white"
+                    font.family: Constants.monoFontFamily
                 }
-
             }
         }
     }
@@ -87,6 +80,7 @@ Rectangle
             {
                 id: textDelegate
                 anchors.centerIn: parent
+                padding: 2
                 text: model[headerModel[column]] ? model[headerModel[column]] : ""
                 color: "white"
                 font.family: Constants.monoFontFamily

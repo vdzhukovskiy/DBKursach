@@ -1,4 +1,5 @@
 #include "dbconnector.h"
+#include "sqlquerymodel.h"
 
 #include <QSqlTableModel>
 #include <QSqlError>
@@ -56,4 +57,22 @@ void DbConnector::addDatabase(QString const & hostName, QString const & database
         return;
 
     emit connected();
+}
+
+void DbConnector::registerIncident(const QString &driverName, const QString &busNumber, const QString &date, const QString &description, const QString &severity)
+{
+    SqlQueryModel insertIncidentQuery;
+    const QString queryString = QString("INSERT INTO Incidents (bus_id, driver_id, data, description, severity)"
+                                        "VALUES ("
+                                            "(SELECT id FROM Buses WHERE license_plate = %1),"
+                                            "(SELECT id FROM Drivers WHERE name = %2),"
+                                            "%3,"
+                                            "%4,"
+                                            "%5"
+                                        ")").arg(busNumber, driverName, date, description, severity);
+    qDebug() << queryString;
+
+    insertIncidentQuery.setQuery(queryString, DbConnector::instance().getDatabase());
+
+    emit updateTable();
 }

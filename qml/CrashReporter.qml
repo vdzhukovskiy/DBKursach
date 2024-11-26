@@ -215,6 +215,21 @@ Rectangle
                         Layout.preferredHeight: 40
 
                         text: qsTr("ЗАРЕГИСТРИРОВАТЬ")
+
+                        onPressed:
+                        {
+                            if(driverName.length && busNumber.length && date.length && description.length)
+                                DBConnector.registerIncident(driverName.text, busNumber.text, date.text, description.text, severity.currentText)
+                        }
+                    }
+                }
+                Connections
+                {
+                    target: DBConnector
+
+                    function onUpdateTable()
+                    {
+                        loaded()
                     }
                 }
             }
