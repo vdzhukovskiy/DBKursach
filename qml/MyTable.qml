@@ -76,7 +76,7 @@ Rectangle
             border.width:  current ? 2 : 1
             clip: true
 
-            Text
+            TextEdit
             {
                 id: textDelegate
                 anchors.centerIn: parent
@@ -84,6 +84,7 @@ Rectangle
                 text: model[headerModel[column]] ? model[headerModel[column]] : ""
                 color: "white"
                 font.family: Constants.monoFontFamily
+                readOnly: true
             }
 
             ToolTip

@@ -3,8 +3,14 @@
 
 #include <QSqlTableModel>
 #include <QSqlError>
-#include <QDebug>
 #include <QSqlQuery>
+#include <QDate>
+
+#include <QSqlRecord>
+#include <QSqlField>
+#include <QMetaType>
+
+#include <QDebug>
 
 DbConnector::DbConnector(QObject *parent)
     : QObject{parent}
@@ -61,18 +67,40 @@ void DbConnector::addDatabase(QString const & hostName, QString const & database
 
 void DbConnector::registerIncident(const QString &driverName, const QString &busNumber, const QString &date, const QString &description, const QString &severity)
 {
-    SqlQueryModel insertIncidentQuery;
-    const QString queryString = QString("INSERT INTO Incidents (bus_id, driver_id, data, description, severity)"
+    QSqlQuery insertIncidentQuery(DbConnector::instance().getDatabase());
+
+    QDate formattedDate = QDate::fromString(date, "yyyy-MM-dd");
+    QString sqlDate = formattedDate.toString("yyyy-MM-dd");
+
+
+
+    const QString queryString = QString("INSERT INTO Incidents (bus_id, driver_id, data, description, severity) "
                                         "VALUES ("
-                                            "(SELECT id FROM Buses WHERE license_plate = %1),"
-                                            "(SELECT id FROM Drivers WHERE name = %2),"
-                                            "%3,"
-                                            "%4,"
-                                            "%5"
-                                        ")").arg(busNumber, driverName, date, description, severity);
+                                        "(SELECT id FROM Buses WHERE license_plate = '%1'), "
+                                        "(SELECT id FROM Drivers WHERE name = '%2'), "
+                                        "'%3', "
+                                        "'%4', "
+                                        "'%5'"
+                                        ")").arg(busNumber, driverName, sqlDate, description, severity);
+
     qDebug() << queryString;
 
-    insertIncidentQuery.setQuery(queryString, DbConnector::instance().getDatabase());
+    // insertIncidentQuery.setQuery(queryString, DbConnector::instance().getDatabase());
+
+    qDebug() << insertIncidentQuery.exec(queryString);
+    // QSqlTableModel table(nullptr, DbConnector::instance().getDatabase());
+    // table.setTable("Incidents");
+
+    // QSqlRecord record;
+
+    // QSqlField busField("bus_id",  QMetaType::fromType<int>(), "Incidents");
+    // busField.setValue(busNumber);
+
+    // QSqlField driverField("driver_id",  QMetaType::fromType<int>(), "Incidents");
+    // busField.setValue(busNumber);
+
+    // record.append()
+    // table.insertRecord()
 
     emit updateTable();
 }
