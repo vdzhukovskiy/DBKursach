@@ -129,6 +129,49 @@ Page
                     }
                 }
 
+                MyButton
+                {
+                    id: timetableButton
+
+                    Layout.leftMargin: 10
+
+                    implicitWidth: 200
+                    implicitHeight: Constants.headerItemHeight
+                    backgroundColor: Constants.darkBackColor
+                    text: ""
+
+                    RowLayout
+                    {
+                        anchors.centerIn: parent
+
+                        spacing: 5
+
+
+                        Image
+                        {
+                            height: 24
+                            width: 24
+                            fillMode: Image.PreserveAspectFit
+                            source: "qrc:/icons/qml/calendar.svg"
+                        }
+
+                        MyLabel
+                        {
+                            width: 50
+                            wrapMode: Text.WordWrap
+                            text: qsTr("Расписание \n водителя")
+
+                            font.pixelSize: 16
+                        }
+                    }
+
+                    onClicked:
+                    {
+                        pageStack.currentIndex = 2
+                        driversTimetable.loaded()
+                    }
+                }
+
                 Item
                 {
                     Layout.fillWidth: true
@@ -153,6 +196,11 @@ Page
             CrashReporter
             {
                 id: crashReporter
+            }
+
+            DriversTimetable
+            {
+                id: driversTimetable
             }
         }
     }

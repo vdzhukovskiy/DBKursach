@@ -83,24 +83,45 @@ void DbConnector::registerIncident(const QString &driverName, const QString &bus
                                         "'%5'"
                                         ")").arg(busNumber, driverName, sqlDate, description, severity);
 
-    qDebug() << queryString;
-
-    // insertIncidentQuery.setQuery(queryString, DbConnector::instance().getDatabase());
-
     qDebug() << insertIncidentQuery.exec(queryString);
-    // QSqlTableModel table(nullptr, DbConnector::instance().getDatabase());
-    // table.setTable("Incidents");
-
-    // QSqlRecord record;
-
-    // QSqlField busField("bus_id",  QMetaType::fromType<int>(), "Incidents");
-    // busField.setValue(busNumber);
-
-    // QSqlField driverField("driver_id",  QMetaType::fromType<int>(), "Incidents");
-    // busField.setValue(busNumber);
-
-    // record.append()
-    // table.insertRecord()
 
     emit updateTable();
+}
+
+QStringList DbConnector::driverNames()
+{
+    QStringList names;
+    names.append("");
+    QSqlQuery query(getDatabase());
+
+    if (query.exec("SELECT name FROM Drivers"))
+    {
+        while (query.next())
+        {
+            names.append(query.value(0).toString());
+        }
+    }
+    else
+    {
+        qDebug() << "Failed to fetch driver names:" << query.lastError().text();
+    }
+
+    return names;
+}
+
+void DbConnector::deleteRow(const QString &id, const QString &tableName)
+{
+    QSqlQuery query(getDatabase());
+
+    QString queryString = QString("DELETE FROM %1 WHERE id = :id").arg(tableName);
+
+    query.prepare(queryString);
+    query.bindValue(":id", id);
+
+    if (query.exec()) {
+        qDebug() << "Row with ID"   << id << "deleted successfully from" << tableName;
+        emit updateTable();
+    } else {
+        qDebug() << "Failed to delete row from" << tableName << ":" << query.lastError().text();
+    }
 }

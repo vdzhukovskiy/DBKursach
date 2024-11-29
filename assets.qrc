@@ -5,6 +5,7 @@
         <file>qml/arrow-u-up-left-svgrepo-com.svg</file>
         <file>qml/view.svg</file>
         <file>qml/crash.svg</file>
+        <file>qml/calendar.svg</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>

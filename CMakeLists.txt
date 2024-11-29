@@ -38,7 +38,7 @@ qt_add_qml_module(appDBKursach
     QML_FILES qml/MyLabel.qml
     QML_FILES qml/Viewer.qml
     QML_FILES qml/CrashReporter.qml
-    # QML_FILES Constants.qml
+    QML_FILES qml/DriversTimetable.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

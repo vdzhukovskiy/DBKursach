@@ -12,29 +12,38 @@ Window
     visible: true
     title: qsTr("BusPark Watcher")
 
-    StackLayout
+    Rectangle
     {
-        id: stack
-
         anchors.fill: parent
 
-        currentIndex: 0
+        color: Constants.defaultBorderColor
 
-        LauncherScreen
-        {}
-
-        DBusAdmin
+        StackLayout
         {
-            onReturnToMainMenu: stack.currentIndex = 0
-        }
+            id: stack
 
-        Connections
-        {
-            target: DBConnector
-            function onConnected()
+            anchors.fill: parent
+            anchors.margins: 5
+
+            currentIndex: 0
+
+            LauncherScreen
+            {}
+
+            DBusAdmin
             {
-                stack.currentIndex = 1
+                onReturnToMainMenu: stack.currentIndex = 0
+            }
+
+            Connections
+            {
+                target: DBConnector
+                function onConnected()
+                {
+                    stack.currentIndex = 1
+                }
             }
         }
     }
+
 }

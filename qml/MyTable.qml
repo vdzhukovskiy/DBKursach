@@ -11,8 +11,11 @@ Rectangle
 
     property var queryModel
     property var headerModel
+    property bool deletable: false
 
     property alias rows: dbTable.rows
+
+    signal deleteRow(index: int)
 
     color: Constants.lightBackColor
 
@@ -75,6 +78,38 @@ Rectangle
             border.color: Constants.defaultBorderColor
             border.width:  current ? 2 : 1
             clip: true
+
+            Loader
+            {
+                anchors.fill: parent
+
+                sourceComponent: (root.deletable && column === 0) ? mAreaComponent : undefined
+            }
+
+            Component
+            {
+                id: mAreaComponent
+
+                MouseArea
+                {
+                    id: ctxMArea
+
+                    acceptedButtons: Qt.RightButton
+                    onClicked:
+                    {
+                        dMenu.open()
+                    }
+                    Menu
+                    {
+                        id: dMenu
+                        MenuItem
+                        {
+                            text: qsTr("Удалить запись")
+                            onTriggered: deleteRow(textDelegate.text)
+                        }
+                    }
+                }
+            }
 
             TextEdit
             {

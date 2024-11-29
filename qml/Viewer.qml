@@ -118,12 +118,20 @@ RowLayout
         MyTable
         {
             id: sqlTable
+
             anchors.fill: parent
             anchors.margins: 10
+
+            deletable: true
 
             queryModel: SqlQueryModel
             {
                 id: queryModel
+            }
+
+            onDeleteRow:
+            {
+                DBConnector.deleteRow(index, tablesComboBox.currentText)
             }
         }
     }
