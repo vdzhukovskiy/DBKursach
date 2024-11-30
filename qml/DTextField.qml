@@ -8,12 +8,14 @@ TextField
 {
     id: userNameTextField
 
+    property color backgroundColor: Constants.lightBackColor
+
     color: "white"
     font.pixelSize: 16
     font.family: Constants.monoFontFamily
     background: Rectangle
     {
-        color: Constants.lightBackColor
+        color: backgroundColor
         border.color: Constants.defaultBorderColor
         border.width: 1
         radius: 2

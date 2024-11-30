@@ -118,10 +118,63 @@ void DbConnector::deleteRow(const QString &id, const QString &tableName)
     query.prepare(queryString);
     query.bindValue(":id", id);
 
-    if (query.exec()) {
+    if (query.exec())
+    {
         qDebug() << "Row with ID"   << id << "deleted successfully from" << tableName;
         emit updateTable();
-    } else {
+    }
+    else
+    {
         qDebug() << "Failed to delete row from" << tableName << ":" << query.lastError().text();
+    }
+}
+
+void DbConnector::insertRow(const QString &tableName, const QStringList &values)
+{
+    QSqlQuery query(getDatabase());
+
+    QStringList columns;
+    QSqlQuery columnQuery(getDatabase());
+    QString columnQueryStr = QString("SHOW COLUMNS FROM %1").arg(tableName);
+
+    if (!columnQuery.exec(columnQueryStr)) {
+        qDebug() << "Failed to fetch columns for table" << tableName << ":" << columnQuery.lastError().text();
+        return;
+    }
+
+    while (columnQuery.next())
+    {
+        QString columnName = columnQuery.value(0).toString();
+        if (columnQuery.value(5).toString() != "auto_increment")
+        {
+            columns.append(columnName);
+        }
+    }
+
+    if (columns.size() != values.size())
+    {
+        qDebug() << "Column count doesn't match value count for table" << tableName;
+        return;
+    }
+
+    QString columnNames = columns.join(", ");
+    QString placeholders = QString("?,").repeated(values.size());
+    placeholders.chop(1);
+
+    QString queryString = QString("INSERT INTO %1 (%2) VALUES (%3)").arg(tableName, columnNames, placeholders);
+    query.prepare(queryString);
+
+    for (int i = 0; i < values.size(); ++i)
+    {
+        query.bindValue(i, values[i]);
+    }
+
+    if (query.exec())
+    {
+        qDebug() << "Row inserted successfully into" << tableName;
+        emit updateTable();
+    } else
+    {
+        qDebug() << "Failed to insert row into" << tableName << ":" << query.lastError().text();
     }
 }

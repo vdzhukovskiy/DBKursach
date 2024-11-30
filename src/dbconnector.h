@@ -20,6 +20,7 @@ public:
     Q_INVOKABLE void registerIncident(const QString &driverName, const QString &busNumber, const QString &date, const QString &description, const QString &severity);
     Q_INVOKABLE QStringList driverNames();
     Q_INVOKABLE void deleteRow(const QString &id, const QString &tableName);
+    Q_INVOKABLE void insertRow(const QString &tableName, const QStringList &values);
 
     QSqlDatabase& getDatabase();
 

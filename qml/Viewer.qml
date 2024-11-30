@@ -42,6 +42,8 @@ RowLayout
                         queryModel.query = "SELECT * FROM " + currentText
                         sqlTable.queryModel = queryModel
                         sqlTable.headerModel = queryModel.userRoleNames
+                        console.log(queryModel.userRoleNames)
+                        insertRow.updateInsert()
                     }
                     Connections
                     {
@@ -52,7 +54,8 @@ RowLayout
                         }
                         function onUpdateTable()
                         {
-                            queryModel.query = "SELECT * FROM " + currentText
+                            queryModel.query = ""
+                            queryModel.query = "SELECT * FROM " + tablesComboBox.currentText
                             sqlTable.queryModel = queryModel
                             sqlTable.headerModel = queryModel.userRoleNames
                         }
@@ -100,7 +103,7 @@ RowLayout
                     {
                         if(text.length)
                             queryModel.query = "SELECT * FROM " + tablesComboBox.currentText +
-                                    " WHERE CONVERT(" + columnsComboBox.currentText + ", char) = " + searchTextField.text
+                                               " WHERE " + columnsComboBox.currentText + " LIKE '%" + searchTextField.text + "%'"
                         else
                             queryModel.query = "SELECT * FROM " + tablesComboBox.currentText
                     }
@@ -121,23 +124,92 @@ RowLayout
         Layout.fillHeight: true
 
         color: Constants.lightBackColor
-        MyTable
-        {
-            id: sqlTable
 
+        ColumnLayout
+        {
             anchors.fill: parent
             anchors.margins: 10
 
-            deletable: true
-
-            queryModel: SqlQueryModel
+            MyTable
             {
-                id: queryModel
+                id: sqlTable
+
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                deletable: true
+
+                queryModel: SqlQueryModel
+                {
+                    id: queryModel
+                }
+
+                onDeleteRow:
+                {
+                    DBConnector.deleteRow(rowNum, tablesComboBox.currentText)
+                }
             }
 
-            onDeleteRow:
+            Item
             {
-                DBConnector.deleteRow(index, tablesComboBox.currentText)
+                id: insertRow
+
+                function updateInsert()
+                {
+                    tfRepeater.model = queryModel.userRoleNames.length > 0 ? queryModel.userRoleNames.length - 1 : 0
+                    insertRLayout.itemWidth = sqlTable.width / queryModel.userRoleNames.length
+                }
+
+                Layout.fillWidth: true
+                Layout.preferredHeight: 40
+
+                RowLayout
+                {
+                    id: insertRLayout
+
+                    property int itemWidth: 0
+
+                    anchors.fill: parent
+
+                    spacing: 0
+
+                    MyButton
+                    {
+                        Layout.preferredWidth: insertRLayout.itemWidth
+                        Layout.preferredHeight: 40
+
+                        backgroundColor: Constants.darkBackColor
+
+                        onPressed:
+                        {
+                            var values = []
+                            for(let i = 0; i < tfRepeater.model; i++)
+                            {
+                                if(!tfRepeater.itemAt(i).text.length)
+                                    return
+                                values.push(tfRepeater.itemAt(i).text)
+                            }
+                            DBConnector.insertRow(tablesComboBox.currentText, values)
+                        }
+
+                        text: qsTr("Добавить запись")
+                    }
+
+                    Repeater
+                    {
+                        id: tfRepeater
+
+                        DTextField
+                        {
+                            Layout.preferredWidth: insertRLayout.itemWidth
+                            Layout.preferredHeight: 40
+                            width: insertRLayout.itemWidth
+                            height: 40
+
+                            backgroundColor: Constants.darkBackColor
+                        }
+                    }
+                }
             }
         }
     }

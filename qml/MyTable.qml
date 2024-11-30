@@ -14,8 +14,9 @@ Rectangle
     property bool deletable: false
 
     property alias rows: dbTable.rows
+    property alias columns: dbTable.columns
 
-    signal deleteRow(index: int)
+    signal deleteRow(rowNum: int)
 
     color: Constants.lightBackColor
 
