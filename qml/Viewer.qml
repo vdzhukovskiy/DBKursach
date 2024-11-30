@@ -50,6 +50,12 @@ RowLayout
                         {
                             tablesComboBox.model = DBConnector.tables()
                         }
+                        function onUpdateTable()
+                        {
+                            queryModel.query = "SELECT * FROM " + currentText
+                            sqlTable.queryModel = queryModel
+                            sqlTable.headerModel = queryModel.userRoleNames
+                        }
                     }
                 }
 
