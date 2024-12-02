@@ -12,6 +12,10 @@ Window
     visible: true
     title: qsTr("BusPark Watcher")
 
+    Component.onCompleted: showFullScreen()
+
+    Keys.onEscapePressed: close()
+
     Rectangle
     {
         anchors.fill: parent

@@ -1,5 +1,4 @@
 #include "dbconnector.h"
-#include "sqlquerymodel.h"
 
 #include <QSqlTableModel>
 #include <QSqlError>

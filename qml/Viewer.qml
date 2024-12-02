@@ -42,7 +42,6 @@ RowLayout
                         queryModel.query = "SELECT * FROM " + currentText
                         sqlTable.queryModel = queryModel
                         sqlTable.headerModel = queryModel.userRoleNames
-                        console.log(queryModel.userRoleNames)
                         insertRow.updateInsert()
                     }
                     Connections

@@ -56,7 +56,7 @@ Page
 
                     implicitWidth: 150
                     implicitHeight: Constants.headerItemHeight
-                    backgroundColor: Constants.darkBackColor
+                    backgroundColor: pageStack.currentIndex === 0 ? Constants.selectedBlueBack : Constants.darkBackColor
                     text: ""
 
                     RowLayout
@@ -94,7 +94,7 @@ Page
 
                     implicitWidth: 250
                     implicitHeight: Constants.headerItemHeight
-                    backgroundColor: Constants.darkBackColor
+                    backgroundColor: pageStack.currentIndex === 1 ? Constants.selectedBlueBack : Constants.darkBackColor
                     text: ""
 
                     RowLayout
@@ -137,7 +137,7 @@ Page
 
                     implicitWidth: 200
                     implicitHeight: Constants.headerItemHeight
-                    backgroundColor: Constants.darkBackColor
+                    backgroundColor: pageStack.currentIndex === 2 ? Constants.selectedBlueBack : Constants.darkBackColor
                     text: ""
 
                     RowLayout
