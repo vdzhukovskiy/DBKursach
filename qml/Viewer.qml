@@ -189,6 +189,11 @@ RowLayout
                                 values.push(tfRepeater.itemAt(i).text)
                             }
                             DBConnector.insertRow(tablesComboBox.currentText, values)
+
+                            for(let i = 0; i < tfRepeater.model; i++)
+                            {
+                                tfRepeater.itemAt(i).text = ""
+                            }
                         }
 
                         text: qsTr("Добавить запись")
